@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    var actionName = ViewContext.RouteData.Values["page"].ToString();
+}
+@*<script src="https://kit.fontawesome.com/29acf2f727.js" crossorigin="anonymous"></script>*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+
+<div class="row main">
+    <div class="col-md-2 p-0 d-print-none side">
+        <div class="sidebar-item">
+            <div class="make-me-sticky">
+                <br /><br /><br />
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"> Home</a></li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/CheckBooking/Index") ? "active":"")" asp-page="/Admin/CheckBooking/Index">New Booking</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/CheckBooking/BookingHistory") ? "active":"")" asp-page="/Admin/CheckBooking/BookingHistory">Booking History</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/ManageCourt/Index") ? "active":"")" asp-page="/Admin/ManageCourt/Index"> Manage Court</a></li>
+
+                    }
+
+                    @if (User.IsInRole("customer"))
+                    {
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/Index") ? "active":"")" asp-page="/Customer/Index">My New Booking</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/History") ? "active":"")" asp-page="/Customer/History">My Booking History</a></li>
+                        <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/Create") ? "active":"")" asp-page="/Customer/Create">Book New</a></li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-10 pt-md-5">
+        <br />
+        @RenderBody()
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

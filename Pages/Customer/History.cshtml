@@ -1,0 +1,97 @@
+﻿@page
+@model CourtBookingApp.Pages.Customer.HistoryModel
+
+@{
+    ViewData["Title"] = "Index";
+    DateTime openTime = new DateTime(2000, 01, 01, 08, 00, 00);
+    DateTime[] openTimeArr = new DateTime[35];
+    for (int i = 0; i < 35; i++)
+    {
+        openTimeArr[i] = openTime;
+        openTime = openTime.AddMinutes(30.00);
+    }
+
+    string[] timeArr = new string[34];
+    for (int i = 0; i < 34; i++)
+    {
+        //timeArr.Append(openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+        timeArr[i] = (openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+    }
+}
+
+<div class="row">
+    <h1 class="col">My Booking History</h1>
+    <p class="col d-flex justify-content-end">
+        <a class="btn btn-success" asp-page="Create">Create New Booking</a>
+    </p>
+</div>
+<br />
+
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<table class="table table-striped table-hover" style="background-color:white;" >
+    <thead class="thead-dark">
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].Court)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].BookingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].BookedSlots)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Booking[0].CreatedDate)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Booking[0].BookingStatus.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Booking)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Court.CourtName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>*@
+            <td>
+                @foreach (var i in item.BookedSlots)
+                {
+                    <span><b>Slot @Html.DisplayFor(modelItem => i.Slot):</b> @timeArr[i.Slot - 1]</span><br />
+                }
+            </td>
+            <td>
+
+                @if (item.BookingStatus.Status == "Pending")
+                {
+                    <p class="text-primary">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                }
+                else if (item.BookingStatus.Status == "Denied")
+                {
+                    <p class="text-danger">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                }
+                else
+                {
+                    <p class="text-success">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                }
+
+            </td>
+            <td>
+                @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                <a class="btn btn-sm btn-outline-info" asp-page="./Details" asp-route-id="@item.Id">More Info</a>
+                @*<a class="btn btn-sm btn-outline-danger" asp-page="./Delete" asp-route-id="@item.Id">Cancel Booking</a>*@
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

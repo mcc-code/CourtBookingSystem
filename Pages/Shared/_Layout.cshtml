@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CourtBookingApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*<script src="https://kit.fontawesome.com/29acf2f727.js" crossorigin="anonymous"></script>*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+    <style>
+        body {
+            /*background-color: #f7f7f7;*/
+            background-color: #dedede;
+        }
+
+        .make-me-sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar-item {
+            /*position: absolute;*/
+            top: 0;
+            /*left: 0;*/
+            width: 100%;
+            height: 100%;
+        }
+
+        @@media (max-width: 767.98px) {
+            .sidebar-item {
+                position: relative;
+            }
+
+            .fancy-floating {
+                margin-top: 0 !important;
+                padding: 0 !important;
+                overflow: auto;
+            }
+
+            header {
+                position: relative !important;
+                width: 100%;
+            }
+
+            .fancy-floating .card {
+                border: none !important;
+            }
+        }
+
+        @@media (max-width: 577px) {
+            .side {
+                display: none;
+            }
+
+            .hide-top {
+                display: block !important;
+                color: white !important;
+            }
+
+                .hide-top .nav-item > .nav-link {
+                    color: white;
+                }
+        }
+
+        html, body, .main, main {
+            height: 100%;
+            margin-bottom: 0;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 0;
+            /*color: #0b66a1;*/
+            /*color: #eb5e5e;*/
+            padding: 15px;
+        }
+
+        header {
+            position: absolute;
+            width: 100%;
+            z-index: 999;
+        }
+
+        nav {
+            /*background-color: rgb(104,15,19);*/
+            background-color: black;
+        }
+
+        .side {
+            /*background-color: white;*/
+            /*background-color: #0a7b83;*/
+            background-color: #3e687e;
+            border: 0;
+            border-right: 0.1px solid #e1e1e1;
+        }
+
+            .side .nav-item > .nav-link {
+                /*color: #666;*/
+                color: white;
+            }
+
+                .side .nav-item > .nav-link.active {
+                    /*background-color: rgba(104, 15, 19, 1) !important;*/
+                    background-color: #022052;
+                    color: white;
+                }
+
+            .side .nav-item > a.nav-link:hover {
+                color: white;
+                /*background-color: rgba(125, 30, 34, 0.80);*/
+                background-color: #045c9c;
+            }
+
+
+        .earn-duct .form-group {
+            margin-bottom: 0;
+        }
+    </style>
+
+</head>
+@{
+    var actionName = ViewContext.RouteData.Values["page"].ToString();
+}
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index"><i class="fas fa-home" style="color:dimgrey;"></i> CourtBookingApp</a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        @* <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>*@
+                    </ul>
+                    <ul class="nav nav-pills flex-column hide-top" style="display: none">
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index"> Home</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/CheckBooking/Index") ? "active":"")" asp-page="/Admin/CheckBooking/Index">New Booking</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/CheckBooking/BookingHistory") ? "active":"")" asp-page="/Admin/CheckBooking/BookingHistory">Booking History</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Admin/ManageCourt/Index") ? "active":"")" asp-page="/Admin/ManageCourt/Index"> Manage Court</a></li>
+
+                        }
+
+                        @if (User.IsInRole("customer"))
+                        {
+                            <li class="nav-item"><a class="nav-link @(actionName == "/Index" ? "active":"")" asp-page="/Index">Home</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/Index") ? "active":"")" asp-page="/Customer/Index">Check Attendance</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/History") ? "active":"")" asp-page="/Customer/History">Check Salary</a></li>
+                            <li class="nav-item"><a class="nav-link @(actionName.Contains("/Customer/Create") ? "active":"")" asp-page="/Customer/Create">Check Holiday</a></li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid main">
+        <main role="main">
+            @*<main role="main" class="pb-3">*@
+
+            @RenderBody()
+        </main>
+    </div>
+
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - CourtBookingApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>*@
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+<script type="text/javascript">
+    window.addEventListener('load', function () {
+        $(".alert").delay(2000).slideUp(200, function () {
+            $(this).alert('close');
+        });
+    });
+</script>

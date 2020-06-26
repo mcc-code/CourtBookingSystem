@@ -1,0 +1,72 @@
+﻿@page
+@model CourtBookingApp.Pages.Customer.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+    // for create Booked Time Slot List
+    DateTime openTime = new DateTime(2000, 01, 01, 08, 00, 00);
+    DateTime[] openTimeArr = new DateTime[35];
+    for (int i = 0; i < 35; i++)
+    {
+        openTimeArr[i] = openTime;
+        openTime = openTime.AddMinutes(30.00);
+    }
+
+    string[] timeArr = new string[34];
+    for (int i = 0; i < 34; i++)
+    {
+        //timeArr.Append(openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+        timeArr[i] = (openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+    }
+}
+
+
+
+<h1>Details</h1>
+<br />
+
+<div class="card">
+    <h4 class="card-header">Booking Details </h4>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Booking.CreatedDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Booking.CreatedDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Booking.BookingDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Booking.BookingDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Booking.Court)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Booking.Court.CourtName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Booking.BookedSlots)
+            </dt>
+            <dd class="col-sm-10">
+                @foreach (var i in Model.BookedSlot)
+                {
+                    <b>Slot @Html.DisplayFor(modelItem => i.Slot):</b> @timeArr[i.Slot - 1] <br />
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Booking.BookingStatus)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Booking.BookingStatus.Status)
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        @*<a class="btn btn-info" asp-page="./Edit" asp-route-id="@Model.Booking.Id">Edit</a>*@
+        <a class="btn btn-secondary" asp-page="./Index">Back to List</a>
+    </div>
+
+</div>

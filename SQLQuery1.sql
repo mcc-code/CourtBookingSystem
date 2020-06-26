@@ -1,0 +1,2 @@
+﻿DBCC CHECKIDENT ("BookingStatus", RESEED, 0)
+DBCC CHECKIDENT ("Court", RESEED, 0)

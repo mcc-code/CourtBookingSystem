@@ -1,0 +1,28 @@
+﻿@page
+@model CourtBookingApp.Pages.Admin.ManageCourt.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<div class="card">
+    <h4 class="card-header"> Delete Court</h4>
+    <div class="card-body">
+        <p>Are you sure you want to delete <b> @Html.DisplayFor(model => model.Court.CourtName)</b>?</p>
+        @*<dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Court.CourtName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Court.CourtName)
+            </dd>
+        </dl>*@
+        <form method="post">
+            <input type="hidden" asp-for="Court.Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a class="btn btn-secondary" asp-page="./Index">No</a>
+        </form>
+    </div>
+    
+</div>

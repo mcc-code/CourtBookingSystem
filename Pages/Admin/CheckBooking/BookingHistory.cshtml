@@ -1,0 +1,118 @@
+﻿@page
+@model CourtBookingApp.Pages.Admin.CheckBooking.BookingHistoryModel
+
+@{
+    ViewData["Title"] = "Index";
+    DateTime openTime = new DateTime(2000, 01, 01, 08, 00, 00);
+    DateTime[] openTimeArr = new DateTime[35];
+    for (int i = 0; i < 35; i++)
+    {
+        openTimeArr[i] = openTime;
+        openTime = openTime.AddMinutes(30.00);
+    }
+
+    string[] timeArr = new string[34];
+    for (int i = 0; i < 34; i++)
+    {
+        //timeArr.Append(openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+        timeArr[i] = (openTimeArr[i].ToString("hh:mm tt") + " - " + openTimeArr[i + 1].ToString("hh:mm tt"));
+    }
+}
+
+<h1>Booking History</h1>
+
+<table class="table table-sm table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingList[0].CreatedDate)
+            </th>
+            <th>User</th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingList[0].Court)
+            </th>
+            <th>
+                Booking Date Time
+                @*@Html.DisplayNameFor(model => model.BookingList[0].BookingDate) &
+                    @Html.DisplayNameFor(model => model.BookingList[0].BookedSlots)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingList[0].BookingStatus.Status)
+            </th>
+            <th class="text-center">Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BookingList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate) <br /><br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Court.CourtName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingDate)<br />
+                    @*</td>
+                        <td>*@
+                    @foreach (var i in item.BookedSlots)
+                    {
+                        <span><b>Slot @Html.DisplayFor(modelItem => i.Slot):</b> @timeArr[i.Slot - 1]</span><br />
+                    }
+                </td>
+
+                <td>
+                    @if (item.BookingStatus.Status == "Denied")
+                    {
+                        <p class="text-danger">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                    }
+                    else if (item.BookingStatus.Status == "Approved")
+                    {
+                        <p class="text-success">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                    }
+                    else
+                    {
+                        <p class="text-primary">@Html.DisplayFor(modelItem => item.BookingStatus.Status)</p>
+                    }
+
+                </td>
+                <td class="d-flex justify-content-end">
+                    @*@if (item.BookingStatus.Status == "Pending")
+                        {
+                            <form method="post">
+                                <input type="hidden" asp-for="@Model.SelectedStatus" value="Approved" />
+                                <input type="hidden" asp-for="@Model.SelectedId" value="@item.Id" />
+                                <button class="btn btn-sm btn-success">Approve</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" asp-for="@Model.SelectedStatus" value="Denied" />
+                                <input type="hidden" asp-for="@Model.SelectedId" value="@item.Id" />
+                                <button class="btn btn-sm btn-danger">Decline</button>
+                            </form>
+                        }
+                        else
+                        {
+
+                            <form method="post">
+                                <input type="hidden" asp-for="@Model.SelectedStatus" value="Approved" />
+                                <input type="hidden" asp-for="@Model.SelectedId" value="@item.Id" />
+                                <button class="btn btn-sm btn-light">Approve</button>
+                            </form>
+                            <form method="post">
+                                <input type="hidden" asp-for="@Model.SelectedStatus" value="Denied" />
+                                <input type="hidden" asp-for="@Model.SelectedId" value="@item.Id" />
+                                <button class="btn btn-sm btn-light">Decline</button>
+                            </form>
+
+                        }*@
+                    <a class="btn btn-sm btn-primary" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-sm btn-dark" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

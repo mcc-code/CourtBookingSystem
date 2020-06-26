@@ -1,0 +1,147 @@
+﻿@page
+@model CourtBookingApp.Pages.Customer.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    .form-check-label {
+        margin: 10px;
+    }
+</style>
+
+@*<h1>New Booking</h1>
+<hr />*@
+
+<div class="row">
+    @*<div class="col"><h2>Available Time Slots </h2></div><br />*@
+    <h1  class="col">New Booking</h1>
+    <div class="col d-flex justify-content-end align-items-start">
+        <a class="btn btn-sm btn-secondary" asp-page="Index">Back to List</a>
+    </div>
+</div>
+<br />
+
+
+<div class="card">
+    <div class="card-header bg-warning">
+        <div class="row">
+            <h4 class="col">@Model.SelectedDate  @@   @Model.SelectedCourtName</h4>
+            <div class="col d-flex justify-content-end align-items-start">
+                <form class="form-inline" method="get">
+                    <div class="form-group">
+                        @if (Model.SelectedBookingDate == null)
+                        {
+                            <input value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control-sm mr-sm-3" asp-for="SelectedBookingDate" />
+                        }
+                        else
+                        {
+                            DateTime s = (DateTime)Model.SelectedBookingDate;
+                            <input value="@s.ToString("yyyy-MM-dd")" class="form-control-sm mr-sm-3" asp-for="SelectedBookingDate" />
+                        }
+                        <span asp-validation-for="SelectedBookingDate" class="text-danger"></span>
+
+                        <select class="form-control-sm mr-sm-3" value="@Model.SelectedCourtId"
+                                asp-for="SelectedCourtId" asp-items="Model.CourtsList">
+                        </select>
+                    </div>
+                    <div>
+                        <input type="submit" value="Go" />
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (@Model.AvailableDate < 0)
+        {<p>No available time slots.</p> }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-9">
+                    <form method="post">
+                        <div class="custom-control custom-checkbox" data-toggle="buttons">
+                            <input type="hidden" asp-for="@Model.SelectedBookingDate" />
+                            <input type="hidden" asp-for="@Model.SelectedCourtId" />
+
+                            @for (var i = 0; i < Model.Slots.Count(); i++)
+                            {
+                                int slotId = int.Parse(Model.Slots[i].Value);
+                                bool dis = false;
+                                @foreach (var item in Model.UnavailableSlots)
+                                {
+                                    if (item.Slot == slotId)
+                                        dis = true;
+                                }
+                                <label class="btn btn-sm form-check-label @(dis ? "text-secondary": "btn-outline-info" )" @(dis ? "disabled" : "") for="customCheck">
+                                    <input type="checkbox" @(dis ? "disabled" : "") class="form-check-input @(dis ? "text-danger" : "") " name="AreChecked" value="@i">
+                                    @Html.DisplayFor(modelItem => Model.Slots[i].Text)
+                                </label>
+                            }
+                        </div><br />
+
+                        <div>
+                            <button class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-3">
+                    @if (Model.SelectedDOW == "Saturday" || Model.SelectedDOW == "Friday")
+                    {
+                        <h5>Weekends Rate</h5>
+                        <p>RM 20/hr</p>
+                    }
+                    else
+                    {
+                        <h5>Weekdays Rate</h5>
+                        <table class="table table-sm table-hover table-striped table-bordered" style="background-color:white;">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Time Slots</th>
+                                    <th>Prices</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>8am - 10am</td>
+                                    <td>Off Peak: <br/>RM 10/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>10am - 12pm</td>
+                                    <td>Normal:<br />RM 18/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>12pm - 2pm</td>
+                                    <td>Off Peak:<br />RM 10/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>2pm to 6pm</td>
+                                    <td>Normal:<br />RM 18/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>6pm - 8.30pm</td>
+                                    <td>Peak: <br />RM 23/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>830pm - 11pm</td>
+                                    <td>Super Peak: <br />RM 28/hr</td>
+                                </tr>
+                                <tr>
+                                    <td>11pm - 1am</td>
+                                    <td>Peak: <br />RM 23/hr</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<br />
+<br />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

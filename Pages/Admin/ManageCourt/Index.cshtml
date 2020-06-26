@@ -1,0 +1,41 @@
+﻿@page
+@model CourtBookingApp.Pages.Admin.ManageCourt.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <h1 class="col-auto">Manage Court</h1>
+
+    <p class="col-auto">
+        <a class="btn btn-success" asp-page="Create">Add New Court</a>
+    </p>
+</div>
+<br />
+
+<table class="table table-hover table-striped" style="max-width:500px;">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Court[0].CourtName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Court)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourtName)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |*@
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

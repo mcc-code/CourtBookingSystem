@@ -1,0 +1,31 @@
+﻿@page
+@model CourtBookingApp.Pages.Admin.ManageCourt.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card" style="max-width:500px;">
+    <h4 class="card-header">Create Court</h4>
+    <div class="card-body">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="Court.CourtName" class="control-label"></label>*@
+                <input asp-for="Court.CourtName" class="form-control" placeholder="Enter court name" />
+                <span asp-validation-for="Court.CourtName" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-page="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

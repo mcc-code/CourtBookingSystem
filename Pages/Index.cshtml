@@ -1,0 +1,184 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@*<script src="https://kit.fontawesome.com/29acf2f727.js" crossorigin="anonymous"></script>*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+<style>
+    th {
+        background-color: lightgoldenrodyellow;
+    }
+</style>
+
+<div class="text-center">
+    <h1 style="padding:30px;"><i>SPORT ARENA SKUDAI</i></h1>
+    @if (User.IsInRole("admin"))
+    {
+        <div class="card" style="background-color:#f78201;border-radius:5px;border-style: double;">
+            <h3 class="card-header bg-dark text-white" style="padding:15px;">Admin</h3>
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <a class="btn text-white" asp-page="./Admin/CheckBooking/Index">New Booking <i class="fas fa-arrow-circle-right"></i></a>
+                    <a class="btn text-white" asp-page="./Admin/CheckBooking/BookingHistory">Booking History <i class="fas fa-arrow-circle-right"></i></a>
+                    <a class="btn text-white" asp-page="./Admin/ManageCourt/Index">Manage Court <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+    }
+    else if (User.IsInRole("customer"))
+    {
+        <div class="card" style="background-color:#720f5e; border-radius:5px;border-style: double;">
+            <h4 class="card-header bg-dark text-white" style="padding:15px;">Customer</h4>
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <a class="btn text-white" asp-page="./Customer/Index">My New Booking  <i class="fas fa-arrow-circle-right"></i></a>
+                    <a class="btn text-white" asp-page="./Customer/History">My Booking History  <i class="fas fa-arrow-circle-right"></i></a>
+                    <a class="btn text-white" asp-page="./Customer/Create">Book New <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="text-white" style="background-color: #e43b3e;border-radius: 5px;padding: 20px;border-style: double;">
+            <h3>WELCOME!</h3>
+            <p>
+                <a class="text-white" asp-area="Identity" asp-page="/Account/Login"><u>Login</u></a>
+                or
+                <a class="text-white" asp-area="Identity" asp-page="/Account/Register"><u>Register</u></a>
+                to book our badminton court online!
+            </p>
+        </div>
+    }
+    <br /><br />
+
+    <div class="card-deck">
+        <div class="card" style="background-color:#dedb1e; border-style: double;">
+            <div>
+                <h5 class="card-header bg-dark text-white">Price List</h5>
+                <div class="card-body">
+                    <h5>Weekdays Rate</h5>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <span>List by Prices</span>
+                            <table class="table table-sm table-bordered" style="background-color:white;">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" colspan="2">
+                                            Off Peak Hour
+                                        </th>
+                                    </tr>
+                                    <tr colspan="2">
+                                        <td>
+                                            8am to 10am <br />
+                                            12pm to 2pm
+                                        </td>
+                                        <td>RM10/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="2">
+                                            Normal Hour
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            10am to 12am<br />
+                                            2pm to 6pm
+                                        </td>
+                                        <td>RM18/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="2">
+                                            Peak Hour
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            6pm to 8.30pm <br />
+                                            11pm to 1am
+                                        </td>
+                                        <td>RM23/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="2">
+                                            Super Peak Hour
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>830pm to 11pm </td>
+                                        <td> RM28/hr</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        @*end table one*@
+                        <div class="col-sm-7">
+                            <span>List by Time Slots</span>
+                            <table class="table table-sm table-bordered" style="background-color:white;">
+                                <thead>
+                                    <tr>
+                                        <th>Time Slots</th>
+                                        <th>Prices</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>8am to 10am</td>
+                                        <td>Off Peak: RM 10/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10am to 12pm</td>
+                                        <td>Normal: RM 18/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12pm to 2pm</td>
+                                        <td>Off Peak: RM 10/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2pm to 6pm</td>
+                                        <td>Normal: RM 18/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6pm to 8.30pm</td>
+                                        <td>Peak: RM 23/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>830pm to 11pm</td>
+                                        <td>Super Peak: RM 28/hr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11pm to 1am</td>
+                                        <td>Peak: RM 23/hr</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        @*end table two*@
+                    </div>
+
+                    <hr />
+                    <h5>Weekends Rate</h5>
+                    <p>RM 20/hr</p>
+                </div>
+                @*end card body*@
+            </div>
+        </div>
+        <div class="card text-white" style="background-color:#006fa3;">
+            <h5 class="card-header bg-dark">About Us</h5>
+            <div class="card-body">
+                <br />
+                <p>
+                    <b><i class="fas fa-phone-square-alt"></i>  Booking Hotline:</b>
+                    011-5509-333<br /><br />
+                    <b><i class="fas fa-map-marked-alt"></i>  Location:</b>
+                    PDT 62580 BATU 8 1/2, Jalan Bertingkat Skudai, Skudai, 81300 Skudai, Johor
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br /><br />
